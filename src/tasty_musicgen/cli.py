@@ -2,7 +2,7 @@ from rich.prompt import Prompt
 from rich.console import Console
 import uuid
 
-from tasty_musicgen.model import get_model, make_inference
+from tasty_musicgen.model import get_model, make_audio_from_text
 from tasty_musicgen.utils import save_audio
 
 
@@ -24,7 +24,7 @@ def main() -> None:
     )
 
     # Generate audio
-    music = make_inference(synthesiser, prompt, float(duration))
+    music = make_audio_from_text(synthesiser, prompt, float(duration))
 
     # Save the audio to a file
     save_audio(music.squeeze(0), f"{uuid.uuid1()}", synthesiser)

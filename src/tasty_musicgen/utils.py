@@ -17,7 +17,7 @@ def save_audio(music: Tensor, out_file: str, model: MusicGen) -> None:
 
 
 # Function to generate and plot mel spectrogram
-def plot_spectrogram(waveform, sample_rate, n_fft=400, hop_length=160):
+def plot_spectrogram(waveform, sample_rate, n_fft=2048, hop_length=160):
     # Generate Mel Spectrogram
     spectrogram = torchaudio.transforms.Spectrogram(
         n_fft=n_fft,
