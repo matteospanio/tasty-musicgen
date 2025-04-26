@@ -75,7 +75,7 @@ if button:
     with st.spinner("Generating music..."):
         model = get_model(device=device, model=model_name)
         # Generate audio
-        music = make_inference(model, prompt, duration=1.0)
+        music = make_inference(model, prompt, duration=duration)
 
     y = music.squeeze(0).cpu()
     # Plot the mel spectrogram
