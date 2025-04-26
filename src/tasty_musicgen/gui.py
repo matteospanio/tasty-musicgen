@@ -77,14 +77,13 @@ if button:
         # Generate audio
         music = make_inference(model, prompt, duration=1.0)
 
-    # Convert to numpy array
-    y = music.squeeze(0)
+    y = music.squeeze(0).cpu()
     # Plot the mel spectrogram
     fig = plot_spectrogram(y, model.sample_rate)
     st.pyplot(fig)
 
     st.audio(
-        y.cpu().numpy(),
+        y.numpy(),
         format="audio/wav",
         sample_rate=model.sample_rate,
     )
