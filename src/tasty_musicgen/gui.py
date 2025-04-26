@@ -1,39 +1,14 @@
 import streamlit as st
-import torchaudio
-import torch
-import matplotlib.pyplot as plt
 from tasty_musicgen.model import get_model, make_inference
+from tasty_musicgen.utils import plot_spectrogram
 
 
-# Function to generate and plot mel spectrogram
-def plot_spectrogram(waveform, sample_rate, n_fft=400, hop_length=160):
-    # Generate Mel Spectrogram
-    spectrogram = torchaudio.transforms.Spectrogram(
-        n_fft=n_fft,
-        hop_length=hop_length,
-    )(waveform)
-
-    # Convert to decibels
-    spectrogram_db = torchaudio.transforms.AmplitudeToDB()(spectrogram)
-
-    freq_bins = spectrogram_db.shape[-2]
-    freqs = torch.linspace(0, sample_rate // 2, freq_bins)
-
-    # Plot
-    fig = plt.figure(figsize=(10, 4))
-    plt.imshow(
-        spectrogram_db.squeeze().numpy(),
-        aspect="auto",
-        origin="lower",
-        extent=[0, waveform.shape[-1] / sample_rate, freqs[0], freqs[-1]],
-        cmap="viridis",
-    )
-    plt.colorbar(format="%+2.0f dB")
-    plt.title("Spectrogram")
-    plt.xlabel("Time [s]")
-    plt.ylabel("Frequency [Hz]")
-    plt.tight_layout()
-    return fig
+@st.cache_resource
+def load_model(device: str, model: str):
+    """
+    Get the model from the model name and device.
+    """
+    return get_model(device=device, model=model)
 
 
 st.write(
@@ -44,6 +19,10 @@ This is a simple GUI for the MusicGEN model.
 """
 )
 
+with st.sidebar:
+    st.image("assets/Csc_oriz_bianco-2.png")
+    st.divider()
+
 device = st.sidebar.selectbox(
     "Select the device to use",
     ("cpu", "cuda"),
@@ -52,7 +31,13 @@ device = st.sidebar.selectbox(
 
 model_name = st.sidebar.selectbox(
     "Select the model to use",
-    ("csc-unipd/tasty-musicgen-small", "facebook/musicgen-small"),
+    (
+        "csc-unipd/tasty-musicgen-small",
+        "facebook/musicgen-small",
+        "facebook/musicgen-medium",
+        "facebook/musicgen-melody",
+        "facebook/musicgen-stereo-small",
+    ),
 )
 
 prompt = st.text_input(
@@ -71,9 +56,8 @@ duration = st.slider(
 button = st.button("Generate Music")
 
 if button:
-
+    model = load_model(device=device, model=model_name)
     with st.spinner("Generating music..."):
-        model = get_model(device=device, model=model_name)
         # Generate audio
         music = make_inference(model, prompt, duration=duration)
 
