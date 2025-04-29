@@ -1,43 +1,54 @@
 import streamlit as st
-from tasty_musicgen.model import make_random_audio
-from tasty_musicgen.gui.utils import load_model, draw_spectrogram, draw_sidebar
+from tasty_musicgen.gui.utils import draw_sidebar, shallow_blackbox, draw_blackbox
 
 st.set_page_config(
     page_title="MusicGEN",
     page_icon="🎵",
 )
 
-st.write(
-    """
-# Musica e Intelligenza Artificiale
+draw_sidebar()
 
-This is a simple GUI for the MusicGEN model.      
+st.write(
+"""
+# Musica e Intelligenza Artificiale
 """
 )
 
-draw_sidebar()
-
-duration = st.slider(
-    "Imposta la durata della musica in secondi",
-    min_value=1.0,
-    max_value=90.0,
-    value=10.0,
-    step=0.5,
+st.image(
+    "assets/word_cloud.png",
+    caption="Nuvola di parole frequenti usate nei discorsi sull'AI."
 )
 
-btn = st.button("Genera musica casuale")
-if btn:
-    model_name = st.session_state.model_name
-    device = st.session_state.device
-    model = load_model(device=device, model=model_name)
-    with st.spinner("Generazione in corso..."):
-        # Generate audio
-        music = make_random_audio(model, duration=duration, temperature=1.0)
 
-    y = music.squeeze(0).cpu()
-    draw_spectrogram(y, model)
-    st.audio(
-        y.numpy(),
-        format="audio/wav",
-        sample_rate=model.sample_rate,
-    )
+with st.container(border=True):
+    shallow_blackbox()
+
+st.markdown(
+"""
+Questa AI è detta blackbox perché non sappiamo esattamente come funzioni e non possiamo controllarla.
+
+##### Cosa succede quando tiro i dadi? 🎲
+
+L'AI genera casualmente un evento musicale.
+"""
+)
+
+st.divider()
+
+with st.container(border=True):
+    draw_blackbox()
+
+st.markdown(
+"""
+Mi piacerebbe controllare i dadi! 🎲
+
+- Banalmente, mi piacerebbe controllare quanto tempo dura la musica.
+- Vorrei anche controllare altre qualità della musica, come il genere, lo stile, la melodia, ecc. 
+"""
+)
+
+st.info(
+"""
+La **temperatura** è un parametro che controlla la casualità della musica generata. Maggiore è la temperatura, più casuale sarà la musica.
+"""
+)

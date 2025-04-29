@@ -1,5 +1,5 @@
 import streamlit as st
-from tasty_musicgen.gui.utils import load_model, draw_spectrogram, draw_sidebar
+from tasty_musicgen.gui.utils import load_model, draw_spectrogram, draw_sidebar, draw_text_blackbox
 from tasty_musicgen.model import make_audio_from_text
 
 draw_sidebar()
@@ -28,34 +28,5 @@ a partire da un testo che descrive il brano stesso.
 """
 )
 
-prompt = st.text_input(
-    "Enter a prompt for the music generation",
-    "A happy tune",
-)
-
-duration = st.slider(
-    "Enter the duration of the music in seconds",
-    min_value=1.0,
-    max_value=90.0,
-    value=10.0,
-    step=0.5,
-)
-
-button = st.button("Generate Music")
-
-if button:
-    device = st.session_state.device
-    model_name = st.session_state.model_name
-    model = load_model(device=device, model=model_name)
-    with st.spinner("Generating music..."):
-        # Generate audio
-        music = make_audio_from_text(model, prompt, duration=duration)
-
-    y = music.squeeze(0).cpu()
-    draw_spectrogram(y, model)
-
-    st.audio(
-        y.numpy(),
-        format="audio/wav",
-        sample_rate=model.sample_rate,
-    )
+with st.container(border=True):
+    draw_text_blackbox()
