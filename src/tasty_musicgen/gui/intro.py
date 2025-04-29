@@ -35,9 +35,6 @@ L'AI genera casualmente un evento musicale.
 
 st.divider()
 
-with st.container(border=True):
-    draw_blackbox()
-
 st.markdown(
 """
 Mi piacerebbe controllare i dadi! 🎲
@@ -46,6 +43,9 @@ Mi piacerebbe controllare i dadi! 🎲
 - Vorrei anche controllare altre qualità della musica, come il genere, lo stile, la melodia, ecc. 
 """
 )
+
+with st.container(border=True):
+    draw_blackbox()
 
 st.info(
 """

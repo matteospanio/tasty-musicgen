@@ -29,4 +29,5 @@ a partire da un testo che descrive il brano stesso.
 )
 
 with st.container(border=True):
+    st.title("Audio da testo")
     draw_text_blackbox()
