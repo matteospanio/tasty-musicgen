@@ -61,3 +61,8 @@ with col2:
     """
     )
 
+st.divider()
+
+st.image(
+    "https://miro.medium.com/v2/resize:fit:527/1*gWP5Whykah1101EpYy17qQ.png"
+)
