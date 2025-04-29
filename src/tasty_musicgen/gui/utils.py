@@ -24,7 +24,7 @@ def draw_sidebar(disable_model_selection: bool = False):
 
     st.sidebar.selectbox(
         "Select the device to use",
-        ("cpu", "cuda"),
+        ("cuda", "cpu"),
         key="device",
     )
 

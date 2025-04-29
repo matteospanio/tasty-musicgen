@@ -12,7 +12,7 @@ with st.container(border=True):
     with col1:
         prompt = st.text_area(
             "Scrivi un testo per la generazione della musica",
-            "A salty tune",
+            "Ambient music for fine restaurant",
         )
         taste = st.selectbox(
             "Scegli il sapore della musica",
