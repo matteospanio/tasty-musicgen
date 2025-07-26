@@ -17,6 +17,7 @@ dependencies = [
 
 [project.scripts]
 tasty-musicgen = "tasty_musicgen.cli:main"
+batch = "tasty_musicgen.cli:batch"
 
 [build-system]
 requires = ["hatchling"]
