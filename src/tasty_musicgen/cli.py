@@ -71,14 +71,15 @@ def batch(prompts: list[str], length: float, device: str, output_folder: Path) -
 
     # draw progress bar
     for prompt in track(prompts, description="Generating music..."):
-        # Generate audio
-        music = make_audio_from_text(synthesiser, prompt, float(length))
-
         destination = output_folder / f"{uuid.uuid1()}"
         destination.mkdir(parents=True, exist_ok=True)
 
         with open(destination / "prompt.txt", "w") as f:
             f.write(prompt)
 
-        # Save the audio to a file
-        save_audio(music.squeeze(0), f"{str(destination)}/audio", synthesiser)
+        for i in range(3):
+            # Generate audio
+            music = make_audio_from_text(synthesiser, prompt, float(length))
+
+            # Save the audio to a file
+            save_audio(music.squeeze(0), f"{str(destination)}/audio_{i}", synthesiser)

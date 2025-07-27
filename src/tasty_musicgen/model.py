@@ -41,7 +41,7 @@ def make_audio_from_text(
     """
     synthesiser.set_generation_params(
         duration=duration,
-        extend_stride=0.5,
+        extend_stride=10,
         temperature=temperature,
     )
 
